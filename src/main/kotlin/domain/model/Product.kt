@@ -7,13 +7,15 @@ data class Product(
     private val type: ProductType,
     private val ht: BigDecimal? = null,
     private val ttc: BigDecimal? = null,
+    private val imported: Boolean = false,
 ){
     companion object {
-        fun from(type: ProductType, ttc: BigDecimal?, ht: BigDecimal?): Product {
+        fun from(type: ProductType, ttc: BigDecimal?, ht: BigDecimal?, imported: Boolean = false): Product {
             return Product(
                 type = type,
                 ttc = ttc,
-                ht = ht
+                ht = ht,
+                imported = imported,
             )
         }
     }
