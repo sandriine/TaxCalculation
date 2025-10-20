@@ -8,6 +8,7 @@ data class Product(
     private val ht: BigDecimal? = null,
     private val ttc: BigDecimal? = null,
     private val imported: Boolean = false,
+    private val taxAmount: BigDecimal? = null,
 ){
     companion object {
         fun from(type: ProductType, ttc: BigDecimal?, ht: BigDecimal?, imported: Boolean = false): Product {
@@ -31,7 +32,16 @@ data class Product(
             type = type,
             ht = ht,
             ttc = ttc,
-            imported = imported
+            imported = imported,
+            taxAmount = taxAmount
         )
+    }
+
+    fun getTaxAmount(): BigDecimal {
+        return taxAmount ?: BigDecimal.ZERO
+    }
+
+    fun getTtc(): BigDecimal {
+        return ttc ?: BigDecimal.ZERO
     }
 }

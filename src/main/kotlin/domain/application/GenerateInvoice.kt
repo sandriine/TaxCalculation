@@ -9,10 +9,21 @@ class GenerateInvoice (
 ){
 
     fun generateInvoice(): Invoice {
+        val productsWithTtc = products
+            .map { it.calculateTtc() }
+
+        val amountTax = productsWithTtc
+            .map { it.getTaxAmount() }
+            .fold(BigDecimal.ZERO) { acc, tax -> acc + tax }
+
+        val total = productsWithTtc
+            .map { it.getTtc() }
+            .fold(BigDecimal.ZERO) { acc, ttc -> acc + ttc }
+
         return Invoice(
             products = products,
-            amountTax = BigDecimal.ZERO,
-            total = BigDecimal.ZERO
+            amountTax = amountTax,
+            total = total
         )
     }
 }
