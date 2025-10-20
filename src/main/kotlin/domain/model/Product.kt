@@ -21,13 +21,17 @@ data class Product(
     }
 
     fun calculateTtc(): Product {
-        val tax = BigDecimal(ProductType.getTax(type))
-        val ttc = ht?.add(ht.multiply(tax).divide(BigDecimal(100)))?.setScale(2, RoundingMode.HALF_UP)
+        val tax = Tax.fromProductTypeAndImported(type, imported)
+        val taxAmount = tax.calculateTaxAmount(ht)
+            .roundUpToNearestFiveCents()
+
+        val ttc = ht?.add(taxAmount)?.setScale(2, RoundingMode.HALF_UP)
 
         return Product(
             type = type,
             ht = ht,
-            ttc = ttc
+            ttc = ttc,
+            imported = imported
         )
     }
 }

@@ -91,4 +91,22 @@ class ProductTest (
    imported = true
   ))
  }
+
+ @Test
+ fun `should calculate ttc for food product imported`() {
+  val product = Product.from(
+   type = ProductType.FOOD,
+   ht = BigDecimal("10"),
+   ttc = null,
+   imported = true)
+
+  val result = product.calculateTtc()
+
+  assertEquals(result, Product.from(
+   type = ProductType.FOOD,
+   ht = BigDecimal("10"),
+   ttc = BigDecimal("10.50"),
+   imported = true
+  ))
+ }
 }
