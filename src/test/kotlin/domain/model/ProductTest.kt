@@ -6,9 +6,7 @@ import org.taxCalculation.domain.model.Product
 import org.taxCalculation.domain.model.ProductType
 import java.math.BigDecimal
 
-class ProductTest (
-
-) {
+class ProductTest {
 
  @Test
  fun `should calculate ttc for other product`() {
