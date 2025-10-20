@@ -8,23 +8,22 @@ data class Product(
     private val ht: BigDecimal? = null,
     private val ttc: BigDecimal? = null,
     private val imported: Boolean = false,
-    private val taxAmount: BigDecimal? = null,
+    private val label: String = "",
 ){
     companion object {
-        fun from(type: ProductType, ttc: BigDecimal?, ht: BigDecimal?, imported: Boolean = false): Product {
+        fun from(type: ProductType, ttc: BigDecimal?, ht: BigDecimal?, imported: Boolean = false, label: String = ""): Product {
             return Product(
                 type = type,
                 ttc = ttc,
                 ht = ht,
                 imported = imported,
+                label = label,
             )
         }
     }
 
     fun calculateTtc(): Product {
-        val tax = Tax.fromProductTypeAndImported(type, imported)
-        val taxAmount = tax.calculateTaxAmount(ht)
-            .roundUpToNearestFiveCents()
+        val taxAmount = getTaxAmount()
 
         val ttc = ht?.add(taxAmount)?.setScale(2, RoundingMode.HALF_UP)
 
@@ -33,15 +32,22 @@ data class Product(
             ht = ht,
             ttc = ttc,
             imported = imported,
-            taxAmount = taxAmount
+            label = label
         )
     }
 
     fun getTaxAmount(): BigDecimal {
-        return taxAmount ?: BigDecimal.ZERO
+        return Tax
+            .fromProductTypeAndImported(type, imported)
+            .calculateTaxAmount(ht)
+            .roundUpToNearestFiveCents()
     }
 
     fun getTtc(): BigDecimal {
         return ttc ?: BigDecimal.ZERO
+    }
+
+    fun getLabel(): String {
+        return label ?: ""
     }
 }

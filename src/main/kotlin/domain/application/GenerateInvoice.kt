@@ -1,13 +1,13 @@
 package org.taxCalculation.domain.application
 
 import org.taxCalculation.domain.model.Invoice
+import org.taxCalculation.domain.model.InvoiceItem
 import org.taxCalculation.domain.model.Product
 import java.math.BigDecimal
 
 class GenerateInvoice (
-    val products: List<Product>
+    private val products: List<Product>
 ){
-
     fun generateInvoice(): Invoice {
         val productsWithTtc = products
             .map { it.calculateTtc() }
@@ -21,7 +21,7 @@ class GenerateInvoice (
             .fold(BigDecimal.ZERO) { acc, ttc -> acc + ttc }
 
         return Invoice(
-            products = products,
+            invoiceItems = productsWithTtc.map { InvoiceItem.from(it) },
             amountTax = amountTax,
             total = total
         )
