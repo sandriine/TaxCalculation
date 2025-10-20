@@ -9,7 +9,7 @@ data class Product(
     private val ttc: BigDecimal? = null,
 ){
     companion object {
-        fun from(type: ProductType, ttc: BigDecimal, ht: BigDecimal?): Product {
+        fun from(type: ProductType, ttc: BigDecimal?, ht: BigDecimal?): Product {
             return Product(
                 type = type,
                 ttc = ttc,
@@ -18,14 +18,14 @@ data class Product(
         }
     }
 
-    fun calculateHt(): Product {
+    fun calculateTtc(): Product {
         val tax = BigDecimal(ProductType.getTax(type))
-        val ht = ttc?.subtract(ttc.multiply(tax).divide(BigDecimal(100)).setScale(2, RoundingMode.HALF_UP))
+        val ttc = ht?.add(ht.multiply(tax).divide(BigDecimal(100)))?.setScale(2, RoundingMode.HALF_UP)
 
         return Product(
             type = type,
-            ttc = ttc,
-            ht = ht
+            ht = ht,
+            ttc = ttc
         )
     }
 }
