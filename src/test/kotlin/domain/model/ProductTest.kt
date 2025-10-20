@@ -13,27 +13,53 @@ class ProductTest (
 
  @Test
  fun `should calculate tax for other product`() {
-  val product = Product.from(ProductType.OTHER, BigDecimal("12.49"), null)
+  val product = Product.from(ProductType.OTHER, BigDecimal("14.99"), null)
 
   val result = product.calculateHt()
 
   assertEquals(result, Product.from(
-   ProductType.BOOK,
+   ProductType.OTHER,
    BigDecimal("14.99"),
-   BigDecimal("1.5")
+   BigDecimal("13.49")
   ))
  }
 
  @Test
  fun `should calculate tax for book product`() {
-  val book = Product.from(ProductType.OTHER, BigDecimal("12.49"), null)
+  val book = Product.from(ProductType.BOOK, BigDecimal("12.49"), null)
 
   val result = book.calculateHt()
 
   assertEquals(result, Product.from(
    ProductType.BOOK,
    BigDecimal("12.49"),
-   BigDecimal("0")
+   BigDecimal("12.49")
+  ))
+ }
+
+ @Test
+ fun `should calculate tax for food product`() {
+  val book = Product.from(ProductType.FOOD, BigDecimal("0.85"), null)
+
+  val result = book.calculateHt()
+
+  assertEquals(result, Product.from(
+   ProductType.FOOD,
+   BigDecimal("0.85"),
+   BigDecimal("0.85")
+  ))
+ }
+
+ @Test
+ fun `should calculate tax for drug product`() {
+  val book = Product.from(ProductType.DRUG, BigDecimal("9.75"), null)
+
+  val result = book.calculateHt()
+
+  assertEquals(result, Product.from(
+   ProductType.DRUG,
+   BigDecimal("9.75"),
+   BigDecimal("9.75")
   ))
  }
 }

@@ -1,6 +1,7 @@
 package org.taxCalculation.domain.model
 
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 data class Product(
     private val type: ProductType,
@@ -18,9 +19,13 @@ data class Product(
     }
 
     fun calculateHt(): Product {
+        val tax = BigDecimal(ProductType.getTax(type))
+        val ht = ttc?.subtract(ttc.multiply(tax).divide(BigDecimal(100)).setScale(2, RoundingMode.HALF_UP))
+
         return Product(
             type = type,
             ttc = ttc,
+            ht = ht
         )
     }
 }
