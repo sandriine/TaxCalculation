@@ -16,4 +16,8 @@ data class InvoiceItem(
             )
         }
     }
+
+    fun getQuantity(): Int = quantity
+    fun getLabel(): String = label
+    fun getTtc(): BigDecimal = ttc
 }
